@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tra Cứu Phạt Nguội Ô Tô, Xe Máy Toàn Quốc</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background-color: #f7f9fa;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+      }
+      .custom-red-header {
+        background-color: #b91c1c;
+      }
+      .custom-red-btn {
+        background-color: #b91c1c;
+      }
+      .custom-red-btn:hover {
+        background-color: #991b1b;
+      }
+    </style>
+  </head>
+  <body class="text-slate-800">
+    <!-- Logo Banner -->
+    <header
+      class="bg-white py-3 border-b border-gray-100 flex justify-center items-center"
+    >
+      <div class="flex items-center gap-2">
+        <div
+          class="flex flex-col items-center justify-center p-1 border-2 border-dashed border-blue-500 rounded-lg"
+        >
+          <span class="w-2.5 h-2.5 rounded-full bg-red-500 mb-0.5"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-400 mb-0.5"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+        </div>
+        <div class="flex flex-col">
+          <span
+            class="text-2xl font-black tracking-tight text-blue-600 leading-none"
+            >Check</span
+          >
+          <span
+            class="text-2xl font-black tracking-tight text-red-600 leading-tight"
+            >PhạtNguội</span
+          >
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Menu Bar -->
+    <nav
+      class="custom-red-header text-white text-xs md:text-sm font-bold uppercase tracking-wide"
+    >
+      <div
+        class="max-w-6xl mx-auto px-4 flex flex-wrap justify-center items-center gap-4 md:gap-8 py-3"
+      >
+        <a href="#" class="hover:text-red-200 transition">Trang Chủ</a>
+        <a href="#" class="hover:text-red-200 transition">Chính Sách Bảo Mật</a>
+        <a href="#" class="hover:text-red-200 transition">Điều Khoản Sử Dụng</a>
+        <a href="#" class="hover:text-red-200 transition"
+          >Miễn Trừ Trách Nhiệm</a
+        >
+        <a href="#" class="hover:text-red-200 transition hidden sm:inline"
+          >Thông Tin Bổ Ích</a
+        >
+        <a href="#" class="hover:text-red-200 transition">Phạt Nguội</a>
+        <a href="#" class="hover:text-red-200 transition">Tin Tức</a>
+      </div>
+    </nav>
+
+    <!-- Container Form Tra Cứu -->
+    <main class="max-w-4xl mx-auto px-4 py-8">
+      <div
+        class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-8"
+      >
+        <div
+          class="custom-red-header text-white text-center py-3.5 font-bold text-lg md:text-xl"
+        >
+          Tra cứu phạt nguội
+        </div>
+
+        <div class="p-6 md:p-8">
+          <form id="searchForm" class="max-w-2xl mx-auto space-y-6">
+            <!-- Radio Loại Phương Tiện -->
+            <div
+              class="flex justify-center items-center gap-6 text-sm font-bold text-gray-700"
+            >
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="vehicle"
+                  value="car"
+                  class="w-4 h-4 text-red-600 focus:ring-red-500"
+                />
+                <span>Ô tô</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="vehicle"
+                  value="moto"
+                  checked
+                  class="w-4 h-4 text-red-600 focus:ring-red-500"
+                />
+                <span class="text-red-600">Xe máy</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="vehicle"
+                  value="ebike"
+                  class="w-4 h-4 text-red-600 focus:ring-red-500"
+                />
+                <span>Xe máy điện</span>
+              </label>
+            </div>
+
+            <!-- Ô nhập biển số -->
+            <div>
+              <input
+                type="text"
+                id="plateInput"
+                placeholder="Nhập biển số xe (VD: 29AC-370.79)"
+                class="w-full px-5 py-3.5 rounded-xl border border-gray-300 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-center sm:text-left text-base uppercase font-semibold"
+                required
+              />
+            </div>
+
+            <!-- Lịch sử tra cứu gần đây -->
+            <div id="historyWrapper" class="hidden">
+              <div
+                class="flex items-center justify-between text-xs text-gray-500 mb-1.5"
+              >
+                <span>Lịch sử tra cứu gần đây:</span>
+                <button
+                  type="button"
+                  id="clearHistoryBtn"
+                  class="hover:text-red-600 underline"
+                >
+                  Xóa lịch sử
+                </button>
+              </div>
+              <div id="historyList" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <!-- Giả lập Cloudflare Turnstile Captcha -->
+            <div class="flex justify-center">
+              <div
+                class="w-72 bg-gray-50 border border-gray-300 rounded-lg p-3 flex items-center justify-between shadow-xs"
+              >
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white"
+                  >
+                    <svg
+                      class="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        d="M5 13l4 4L19 7"
+                      ></path>
+                    </svg>
+                  </div>
+                  <span class="text-sm font-medium text-gray-700"
+                    >Thành công!</span
+                  >
+                </div>
+                <div class="text-right flex flex-col items-end">
+                  <svg class="w-12 h-5" viewBox="0 0 100 40" fill="#f6821f">
+                    <path
+                      d="M78 22c-1.1-6.1-6.4-10.7-12.8-10.7-3.9 0-7.3 1.7-9.6 4.4C53.3 10.8 47.7 8 41.3 8 32.2 8 24.6 14.8 23.3 23.6 20.3 24.3 18 27 18 30.2c0 3.7 3 6.8 6.8 6.8h53.4c4.3 0 7.8-3.5 7.8-7.8 0-3.6-2.5-6.6-6-7.2h-2z"
+                    />
+                  </svg>
+                  <span class="text-[9px] text-gray-400 leading-tight"
+                    >CLOUDFLARE</span
+                  >
+                  <span class="text-[8px] text-gray-400 leading-tight"
+                    >Quyền riêng tư • Giúp đỡ</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Nút TRA NGAY -->
+            <button
+              type="submit"
+              id="submitBtn"
+              class="w-full custom-red-btn text-white font-extrabold py-3.5 rounded-xl uppercase tracking-wider text-lg shadow transition duration-150 active:scale-[0.99] flex items-center justify-center gap-2"
+            >
+              TRA NGAY
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Khung Kết Quả Tra Cứu -->
+      <div
+        id="resultWrapper"
+        class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden p-6 md:p-8"
+      >
+        <h3 class="text-center font-bold text-red-700 text-xl mb-6">
+          Kết quả tra cứu
+        </h3>
+
+        <!-- Loading Box quay vòng giả lập -->
+        <div id="loadingBox" class="hidden py-10 text-center">
+          <div
+            class="inline-block w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin mb-4"
+          ></div>
+          <p
+            id="loadingStatusText"
+            class="text-base font-semibold text-gray-800"
+          >
+            Đang kết nối cổng dữ liệu Cục Cảnh sát giao thông...
+          </p>
+          <p class="text-xs text-gray-500 mt-1">
+            Hệ thống đang truy xuất dữ liệu từ camera giám sát, vui lòng chờ...
+          </p>
+        </div>
+
+        <!-- Vùng hiển thị kết quả -->
+        <div id="resultContent">
+          <div
+            class="border border-emerald-300 bg-emerald-50/50 rounded-xl p-8 text-center max-w-xl mx-auto"
+          >
+            <div
+              class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto mb-4 shadow-sm"
+            >
+              <svg
+                class="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+            </div>
+            <h4 class="text-xl font-bold text-gray-800 mb-2">
+              Không có lỗi phạt nguội!
+            </h4>
+            <p class="text-gray-600 font-medium mb-1">
+              không phát hiện vi phạm
+            </p>
+            <p class="text-emerald-700 font-bold mb-4">Chúc mừng bạn!</p>
+            <div
+              class="text-xs text-gray-500 space-y-1 border-t border-emerald-200 pt-3"
+            >
+              <p>Nguồn: <b>Cổng thông tin điện tử Cục CSGT</b></p>
+              <p>Bạn nên kiểm tra lại sau 3–15 ngày nếu mới vi phạm gần đây.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const violationData = {
+        "29AH20445": {
+          plate: "29AH-204.45",
+          type: "Mô tô - Xe máy",
+          behavior:
+            "Không chấp hành hiệu lệnh của đèn tín hiệu giao thông (Vượt đèn đỏ)",
+          time: "14:30 - 05/10/2026",
+          location: "Nút giao thông Mai Dịch, Cầu Giấy, TP. Hà Nội",
+          status: "Chưa xử phạt",
+          unit: "Đội CSGT Đường bộ Số 6 - CATP Hà Nội",
+        },
+        "28H141102": {
+          plate: "28H1-411.02",
+          type: "Mô tô - Xe máy",
+          behavior:
+            "Không chấp hành hiệu lệnh của đèn tín hiệu giao thông (Vượt đèn đỏ)",
+          time: "14:30 - 10/5/2026",
+          location: "Nút giao thông Mai Dịch, Cầu Giấy, TP. Hà Nội",
+          status: "Chưa xử phạt",
+          unit: "Đội CSGT Đường bộ Số 6 - CATP Hà Nội",
+        },
+        "29AC37079": {
+          plate: "29AC-370.79",
+          type: "Mô tô - Xe máy điện",
+          behavior:
+            "Điều khiển xe chạy quá tốc độ quy định từ 10 km/h đến 20 km/h",
+          time: "09:15 - 06/10/2026",
+          location: "Nút giao Mai Dịch, TP. Hà Nội",
+          status: "Chưa xử phạt",
+          unit: "Đội CSGT Đường bộ Số 14 - CATP Hà Nội",
+        },
+      };
+
+      function renderHistory() {
+        const history = JSON.parse(
+          localStorage.getItem("phatnguoi_history") || "[]",
+        );
+        const wrapper = document.getElementById("historyWrapper");
+        const list = document.getElementById("historyList");
+
+        if (history.length === 0) {
+          wrapper.classList.add("hidden");
+          return;
+        }
+
+        wrapper.classList.remove("hidden");
+        list.innerHTML = "";
+        history.slice(0, 5).forEach((plate) => {
+          const item = document.createElement("button");
+          item.type = "button";
+          item.className =
+            "px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-md border border-gray-200 transition";
+          item.textContent = plate;
+          item.onclick = () => {
+            document.getElementById("plateInput").value = plate;
+          };
+          list.appendChild(item);
+        });
+      }
+
+      function saveHistory(plate) {
+        let history = JSON.parse(
+          localStorage.getItem("phatnguoi_history") || "[]",
+        );
+        history = history.filter((p) => p !== plate);
+        history.unshift(plate);
+        localStorage.setItem("phatnguoi_history", JSON.stringify(history));
+        renderHistory();
+      }
+
+      document.getElementById("clearHistoryBtn").onclick = () => {
+        localStorage.removeItem("phatnguoi_history");
+        renderHistory();
+      };
+
+      renderHistory();
+
+      document
+        .getElementById("searchForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const raw = document.getElementById("plateInput").value.trim();
+          const key = raw.replace(/[-. \s]/g, "").toUpperCase();
+
+          saveHistory(raw.toUpperCase());
+
+          const content = document.getElementById("resultContent");
+          const loading = document.getElementById("loadingBox");
+          const statusText = document.getElementById("loadingStatusText");
+          const submitBtn = document.getElementById("submitBtn");
+
+          submitBtn.disabled = true;
+          submitBtn.classList.add("opacity-70", "cursor-not-allowed");
+          submitBtn.innerHTML = `
+        <span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+        <span>ĐANG TRA CỨU...</span>
+      `;
+
+          content.classList.add("hidden");
+          loading.classList.remove("hidden");
+          statusText.innerText =
+            "Đang kết nối cổng dữ liệu Cục Cảnh sát giao thông...";
+
+          document
+            .getElementById("resultWrapper")
+            .scrollIntoView({ behavior: "smooth" });
+
+          setTimeout(() => {
+            statusText.innerText =
+              "Đang đối soát lịch sử camera nhận diện phương tiện...";
+          }, 2000);
+
+          setTimeout(() => {
+            loading.classList.add("hidden");
+            content.classList.remove("hidden");
+
+            submitBtn.disabled = false;
+            submitBtn.classList.remove("opacity-70", "cursor-not-allowed");
+            submitBtn.innerHTML = "TRA NGAY";
+
+            if (violationData[key]) {
+              const item = violationData[key];
+              content.innerHTML = `
+            <div class="border-2 border-red-500 bg-red-50/60 rounded-xl p-6 md:p-8 max-w-xl mx-auto shadow-sm">
+              <div class="w-14 h-14 rounded-full bg-red-600 text-white flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+              </div>
+              <h4 class="text-xl font-extrabold text-red-600 text-center mb-1 uppercase">CẢNH BÁO: PHÁT HIỆN VI PHẠM PHẠT NGUỘI!</h4>
+              <p class="text-center font-bold text-gray-800 text-lg mb-4">Biển số: <span class="text-red-600">${item.plate}</span> (${item.type})</p>
+
+              <div class="bg-white border border-red-200 rounded-lg p-4 space-y-2.5 text-sm text-gray-700">
+                <div class="flex justify-between border-b border-gray-100 pb-2">
+                  <span class="font-medium text-gray-500">Hành vi vi phạm:</span>
+                  <span class="font-bold text-red-600 text-right max-w-xs">${item.behavior}</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2">
+                  <span class="font-medium text-gray-500">Thời gian vi phạm:</span>
+                  <span class="font-semibold text-gray-900">${item.time}</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2">
+                  <span class="font-medium text-gray-500">Địa điểm vi phạm:</span>
+                  <span class="font-medium text-gray-900 text-right max-w-xs">${item.location}</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2">
+                  <span class="font-medium text-gray-500">Trạng thái:</span>
+                  <span class="bg-red-600 text-white font-bold px-2.5 py-0.5 rounded text-xs">${item.status}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="font-medium text-gray-500">Đơn vị thụ lý:</span>
+                  <span class="font-medium text-gray-900 text-right">${item.unit}</span>
+                </div>
+              </div>
+
+              <div class="text-xs text-gray-500 space-y-1 text-center border-t border-red-200 mt-5 pt-3">
+                <p>Nguồn: <b>Cổng thông tin điện tử Cục CSGT</b></p>
+                <p>Chủ phương tiện vui lòng liên hệ đơn vị thụ lý để phối hợp xử lý theo quy định.</p>
+              </div>
+            </div>
+          `;
+            } else {
+              content.innerHTML = `
+            <div class="border border-emerald-300 bg-emerald-50/50 rounded-xl p-8 text-center max-w-xl mx-auto">
+              <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <h4 class="text-xl font-bold text-gray-800 mb-1">Không có lỗi phạt nguội!</h4>
+              <p class="font-semibold text-gray-700 mb-1">Biển số: ${raw.toUpperCase()}</p>
+              <p class="text-gray-600 font-medium mb-1">không phát hiện vi phạm</p>
+              <p class="text-emerald-700 font-bold mb-4">Chúc mừng bạn!</p>
+              <div class="text-xs text-gray-500 space-y-1 border-t border-emerald-200 pt-3">
+                <p>Nguồn: <b>Cổng thông tin điện tử Cục CSGT</b></p>
+                <p>Bạn nên kiểm tra lại sau 3–15 ngày nếu mới vi phạm gần đây.</p>
+              </div>
+            </div>
+          `;
+            }
+          }, 4200);
+        });
+    </script>
+  </body>
+</html>
